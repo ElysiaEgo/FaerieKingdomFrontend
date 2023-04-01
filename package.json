@@ -19,7 +19,7 @@
   "scripts": {
     "lint": "eslint src api mock --ext .ts,.vue --fix",
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build –max_old_space_size=4096",
     "serve": "vite preview",
     "prepare": "husky install .github/husky"
   },
