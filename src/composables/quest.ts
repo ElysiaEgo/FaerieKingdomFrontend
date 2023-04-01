@@ -9,9 +9,10 @@ export interface QuestResponse {
 export interface Quest {
   questId: string
   questPhase: string
+  challengeNum: string
 }
 
-export const useCurrentUser = async (biliId: string): Promise<QuestResponse> => {
+export const useQuest = async (biliId: string): Promise<QuestResponse> => {
   return await api.post('getQuest', {
     json: {
       biliId,

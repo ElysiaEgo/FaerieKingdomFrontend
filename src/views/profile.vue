@@ -25,7 +25,6 @@
 import { computed, ref } from 'vue'
 import { DataTableColumns, useMessage } from 'naive-ui'
 import { useCurrentUser } from '../composables/user'
-import { useRouter } from 'vue-router'
 import { usebiliAcco } from '../composables/biliAcco'
 import { useRequest } from '../composables/request'
 
@@ -47,7 +46,6 @@ const model = ref({
   password: ''
 })
 
-const router = useRouter()
 const loading = ref(false)
 const disabled = computed<boolean>(() => model.value.username === '' || model.value.password === '')
 
@@ -57,7 +55,7 @@ const handleLogin = async (e: Event): Promise<void> => {
   loading.value = true
   try {
     await usebiliAcco(model.value.username, model.value.password)
-    router.go(0)
+    profile.value.data = await useCurrentUser()
   } catch (e) {
     message.error(e instanceof Error ? e.message : 'unknown error')
   }
@@ -69,10 +67,10 @@ interface BiliAcco {
   account: string
 }
 
-const profile = useRequest(useCurrentUser())
-const data = computed(() => (profile.data.value?.biliAccos.length === 0
-  ? [{ no: 0, account: 'not found' }]
-  : profile.data.value?.biliAccos.map((value, index) => {
+const profile = ref(useRequest(useCurrentUser()))
+const data = computed(() => (profile.value.data?.biliAccos.length === 0
+  ? []
+  : profile.value.data?.biliAccos.map((value, index) => {
     return {
       no: index,
       account: value.name
