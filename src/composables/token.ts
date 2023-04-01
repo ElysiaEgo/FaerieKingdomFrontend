@@ -39,6 +39,8 @@ export const useReg = async (uname: string, passwd: string): Promise<TokenRespon
   }).json().then(async (value: any) => {
     if (value.code === 0) {
       return await useToken(uname, passwd)
+    } else {
+      return value
     }
   })
 }

@@ -3,16 +3,16 @@
 <template>
   <n-card>
     <n-form size="large" :rules="rules" :model="model">
-      <n-form-item-row label="Bili ID" path="biliid">
+      <n-form-item-row label="B站账户" path="biliid">
         <n-select v-model:value="model.biliId" :options="options" @update:value="accountSelected" />
       </n-form-item-row>
-      <n-form-item-row label="Quest">
+      <n-form-item-row label="关卡">
         <n-select v-model:value="model.quest" :options="questsOptions" :disabled="model.biliId === ''" />
       </n-form-item-row>
-      <n-form-item-row label="Num">
+      <n-form-item-row label="次数">
         <n-input-number v-model:value="model.num" />
       </n-form-item-row>
-      <n-form-item-row label="Gold Apple">
+      <n-form-item-row label="使用金苹果">
         <n-switch v-model:value="active" />
       </n-form-item-row>
     </n-form>
@@ -40,7 +40,7 @@ const message = useMessage()
 const rules = {
   num: {
     required: true,
-    message: 'num is required.',
+    message: '次数为必填项',
     trigger: 'blur'
   }
 }
@@ -87,7 +87,7 @@ const handleOrder = async (e: Event): Promise<void> => {
     await newOrder(parseInt(quest[1]), parseInt(quest[2]), model.value.num, model.value.biliId, active.value)
     orders.value.data = await useOrder()
   } catch (e) {
-    message.error(e instanceof Error ? e.message : 'unknown error')
+    message.error(e instanceof Error ? e.message : '未知错误')
   }
   loading.value = false
 }
@@ -113,23 +113,23 @@ const createColumns = (): DataTableColumns => {
       key: 'no'
     },
     {
-      title: 'Bili Account',
+      title: 'B站账户',
       key: 'biliId'
     },
     {
-      title: 'Quest',
+      title: '关卡',
       key: 'quest'
     },
     {
-      title: 'Num',
+      title: '次数',
       key: 'num'
     },
     {
-      title: 'Message',
+      title: '消息',
       key: 'message'
     },
     {
-      title: 'Finish',
+      title: '完成情况',
       key: 'finish'
     }
   ]
