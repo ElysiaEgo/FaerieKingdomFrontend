@@ -5,11 +5,12 @@ export interface BiliResponse {
   code: number
 }
 
-export const usebiliAcco = async (biliname: string, bilipass: string): Promise<BiliResponse> => {
+export const usebiliAcco = async (biliname: string, bilipass: string, isios: boolean): Promise<BiliResponse> => {
   return await api.post('bili_login', {
     json: {
       biliname,
       bilipass,
+      isios,
       token: getToken()
     }
   }).json<BiliResponse>()

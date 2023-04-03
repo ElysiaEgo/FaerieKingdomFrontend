@@ -10,6 +10,9 @@
       <n-form-item-row label="密码" path="password">
         <n-input v-model:value="model.password" type="password" placeholder="输入密码" />
       </n-form-item-row>
+      <n-form-item-row label="IOS服">
+        <n-switch v-model:value="model.ios" />
+      </n-form-item-row>
     </n-form>
     <n-button type="primary" size="large" block :loading="loading" :disabled="disabled" @click="handleLogin">登录</n-button>
     <br>
@@ -43,7 +46,8 @@ const rules = {
 
 const model = ref({
   username: '',
-  password: ''
+  password: '',
+  ios: false
 })
 
 const loading = ref(false)
@@ -54,7 +58,7 @@ const handleLogin = async (e: Event): Promise<void> => {
   e.preventDefault()
   loading.value = true
   try {
-    await usebiliAcco(model.value.username, model.value.password)
+    await usebiliAcco(model.value.username, model.value.password, model.value.ios)
     profile.value.data = await useCurrentUser()
   } catch (e) {
     message.error(e instanceof Error ? e.message : '未知错误')
