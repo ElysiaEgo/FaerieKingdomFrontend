@@ -41,7 +41,9 @@ import {
   NDataTable,
   NSelect,
   NInputNumber,
-  NSwitch
+  NSwitch,
+  NCheckbox,
+  NCheckboxGroup
 } from 'naive-ui'
 
 export default create({
@@ -85,6 +87,8 @@ export default create({
     NDataTable,
     NSelect,
     NInputNumber,
-    NSwitch
+    NSwitch,
+    NCheckbox,
+    NCheckboxGroup
   ]
 })

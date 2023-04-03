@@ -12,8 +12,13 @@
       <n-form-item-row label="次数">
         <n-input-number v-model:value="model.num" />
       </n-form-item-row>
-      <n-form-item-row label="使用金苹果">
-        <n-switch v-model:value="active" />
+      <n-form-item-row label="使用苹果">
+        <n-checkbox-group v-model:value="apple">
+          <n-checkbox value="gold" label="金苹果" />
+          <n-checkbox value="silver" label="银苹果" />
+          <n-checkbox value="copper" label="铜苹果" />
+          <n-checkbox value="bronze" label="青铜树苗" />
+        </n-checkbox-group>
       </n-form-item-row>
     </n-form>
     <n-button type="primary" size="large" block :loading="loading" :disabled="disabled || loading" @click="handleOrder">Order</n-button>
@@ -51,6 +56,8 @@ const model = ref({
   num: 0
 })
 
+const apple = ref<string[]>([])
+
 const profile = useRequest(useCurrentUser())
 const options = computed(() => {
   return profile.data.value?.biliAccos.map((value) => {
@@ -74,8 +81,6 @@ const accountSelected = async (v: string): Promise<void> => {
   quest.value = await useQuest(v)
 }
 
-const active = ref(false)
-
 const loading = ref(false)
 const disabled = computed(() => model.value.biliId === '' || model.value.quest === '' || model.value.num === 0)
 
@@ -84,7 +89,12 @@ const handleOrder = async (e: Event): Promise<void> => {
   loading.value = true
   try {
     const quest = model.value.quest.match(/(\d*)-(\d*)/) as RegExpMatchArray
-    await newOrder(parseInt(quest[1]), parseInt(quest[2]), model.value.num, model.value.biliId, active.value)
+    await newOrder(parseInt(quest[1]), parseInt(quest[2]), model.value.num, model.value.biliId, [
+      apple.value.includes('gold'),
+      apple.value.includes('silver'),
+      apple.value.includes('copper'),
+      apple.value.includes('bronze')
+    ])
     orders.value.data = await useOrder()
   } catch (e) {
     message.error(e instanceof Error ? e.message : '未知错误')

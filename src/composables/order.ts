@@ -27,13 +27,13 @@ export const useOrder = async (): Promise<OrderResponse> => {
   }).json<OrderResponse>()
 }
 
-export const newOrder = async (questId: number, questPhase: number, num: number, biliId: string, goldApple: boolean): Promise<NewOrerResponse> => {
+export const newOrder = async (questId: number, questPhase: number, num: number, biliId: string, useApple: boolean[]): Promise<NewOrerResponse> => {
   return await api.post('order', {
     json: {
       questId,
       questPhase,
       num,
-      goldApple,
+      useApple,
       biliId,
       token: getToken()
     }
