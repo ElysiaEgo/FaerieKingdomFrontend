@@ -62,7 +62,7 @@ const profile = useRequest(useCurrentUser())
 const options = computed(() => {
   return profile.data.value?.biliAccos.map((value) => {
     return {
-      label: value.name,
+      label: value.name + (value.isios ? '-ios' : '-bili'),
       value: value.id
     }
   })
