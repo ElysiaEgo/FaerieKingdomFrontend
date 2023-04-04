@@ -17,7 +17,7 @@
           <n-checkbox value="gold" label="金苹果" />
           <n-checkbox value="silver" label="银苹果" />
           <n-checkbox value="copper" label="铜苹果" />
-          <n-checkbox value="bronze" label="青铜树苗" />
+          <n-checkbox value="bronze" label="青铜苹果" />
         </n-checkbox-group>
       </n-form-item-row>
     </n-form>

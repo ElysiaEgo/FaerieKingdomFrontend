@@ -8,6 +8,7 @@ export interface ProfileResponse {
 export interface BiliAcco {
   id: string
   name: string
+  isios: boolean
 }
 
 export const useCurrentUser = async (): Promise<ProfileResponse> => {

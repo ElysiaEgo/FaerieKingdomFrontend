@@ -77,7 +77,8 @@ const data = computed(() => (profile.value.data?.biliAccos.length === 0
   : profile.value.data?.biliAccos.map((value, index) => {
     return {
       no: index,
-      account: value.name
+      account: value.name,
+      server: value.isios ? 'IOS' : 'Bili'
     }
   })))
 
@@ -90,6 +91,10 @@ const createColumns = (): DataTableColumns<BiliAcco> => {
     {
       title: 'B站账户',
       key: 'account'
+    },
+    {
+      title: '服务器',
+      key: 'server'
     }
   ]
 }
