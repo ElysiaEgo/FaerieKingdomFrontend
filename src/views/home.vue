@@ -7,7 +7,7 @@
         <n-select v-model:value="model.biliId" :options="options" @update:value="accountSelected" />
       </n-form-item-row>
       <n-form-item-row label="关卡">
-        <n-select v-model:value="model.quest" :options="questsOptions" :disabled="model.biliId === ''" />
+        <n-select v-model:value="model.quest" :options="questsOptions" :disabled="model.biliId === ''" filterable />
       </n-form-item-row>
       <n-form-item-row label="次数">
         <n-input-number v-model:value="model.num" />
@@ -39,6 +39,7 @@ import { Order, newOrder, useOrder } from '../composables/order'
 import { useRequest } from '../composables/request'
 import { useCurrentUser } from '../composables/user'
 import { QuestResponse, useQuest } from '../composables/quest'
+import quests from '../assets/quests.json'
 
 const message = useMessage()
 
@@ -70,9 +71,12 @@ const options = computed(() => {
 
 const quest: Ref<QuestResponse> = ref({ code: 0, quests: [] })
 const questsOptions = computed(() => {
+  const questsInfos: Array<{questId: number, spotName: string, questName: string, apcost: number, phases: number[]}> = quests as any
   return quest.value.quests.slice(0).sort((a, b) => parseInt(b.challengeNum) - parseInt(a.challengeNum)).map((value) => {
+    const questName = questsInfos.find(info => info.questId === parseInt(value.questId))?.questName ?? ''
+    const spotName = questsInfos.find(info => info.questId === parseInt(value.questId))?.spotName ?? ''
     return {
-      label: `${value.questId}-${value.questPhase}`,
+      label: `${spotName}-${questName}-${value.questId}-${value.questPhase}`,
       value: `${value.questId}-${value.questPhase}`
     }
   })
