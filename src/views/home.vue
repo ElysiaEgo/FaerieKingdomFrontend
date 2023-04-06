@@ -98,14 +98,14 @@ const questsOptions = computed(() => {
       label: war.name,
       value: `${war.name}-${war.warid}`,
       children: spotsInfos.filter((value) => value.warId === war.warid).map((spot) => {
-        const currentQuests = questsInfos.filter((value) => value.spotId === spot.spotId).filter((value) => questsMap.has(value.questId))
+        const currentQuests = questsInfos.filter((value) => value.spotId === spot.spotId)
         return {
           label: spot.spotName,
           value: `${spot.spotName}-${spot.spotId}`,
           children: currentQuests.map((quest) => {
             return {
-              label: `${quest.questName}-${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? ''}`,
-              value: `${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? ''}`
+              label: `${quest.questName}-${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? '1'}`,
+              value: `${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? '1'}`
             }
           })
         }
