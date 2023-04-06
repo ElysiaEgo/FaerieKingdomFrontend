@@ -7,7 +7,17 @@
         <n-select v-model:value="model.biliId" :options="options" @update:value="accountSelected" />
       </n-form-item-row>
       <n-form-item-row label="关卡">
-        <n-select v-model:value="model.quest" :options="questsOptions" :disabled="model.biliId === ''" filterable />
+        <n-cascader
+          v-model:value="model.quest"
+          expand-trigger="hover"
+          :options="questsOptions"
+          check-strategy="child"
+          clearable
+          show-path
+          filterable
+          :disabled="model.biliId === ''"
+          :menu-props="{ style: '--n-column-width: auto;' }"
+        />
       </n-form-item-row>
       <n-form-item-row label="次数">
         <n-input-number v-model:value="model.num" />
@@ -33,13 +43,15 @@
 </template>
 
 <script lang="ts" setup>
-import { DataTableColumns, useMessage } from 'naive-ui'
+import { CascaderOption, DataTableColumns, useMessage } from 'naive-ui'
 import { computed, Ref, ref } from 'vue'
 import { Order, newOrder, useOrder } from '../composables/order'
 import { useRequest } from '../composables/request'
 import { useCurrentUser } from '../composables/user'
 import { QuestResponse, useQuest } from '../composables/quest'
 import quests from '../assets/quests.json'
+import wars from '../assets/wars.json'
+import spots from '../assets/spots.json'
 
 const message = useMessage()
 
@@ -71,15 +83,50 @@ const options = computed(() => {
 
 const quest: Ref<QuestResponse> = ref({ code: 0, quests: [] })
 const questsOptions = computed(() => {
-  const questsInfos: Array<{questId: number, spotName: string, questName: string, apcost: number, phases: number[]}> = quests as any
-  return quest.value.quests.slice(0).sort((a, b) => parseInt(b.challengeNum) - parseInt(a.challengeNum)).map((value) => {
-    const questName = questsInfos.find(info => info.questId === parseInt(value.questId))?.questName ?? ''
-    const spotName = questsInfos.find(info => info.questId === parseInt(value.questId))?.spotName ?? ''
+  const questsInfos: Array<{questId: number, spotId: number, questName: string, apcost: number, phases: number[]}> = quests as any
+  const spotsInfos: Array<{spotId: number, spotName: string, warId: number}> = spots as any
+  const warsInfos: Array<{warid: number, name: string}> = wars as any
+
+  const questsMap = new Map<number, {questId: string, questPhase: string}>()
+
+  quest.value.quests.forEach((value) => {
+    questsMap.set(parseInt(value.questId), value)
+  })
+
+  const result = warsInfos.sort((a, b) => a.warid - b.warid).map((war) => {
     return {
-      label: `${spotName}-${questName}-${value.questId}-${value.questPhase}`,
-      value: `${value.questId}-${value.questPhase}`
+      label: war.name,
+      value: `${war.name}-${war.warid}`,
+      children: spotsInfos.filter((value) => value.warId === war.warid).map((spot) => {
+        const currentQuests = questsInfos.filter((value) => value.spotId === spot.spotId).filter((value) => questsMap.has(value.questId))
+        return {
+          label: spot.spotName,
+          value: `${spot.spotName}-${spot.spotId}`,
+          children: currentQuests.map((quest) => {
+            return {
+              label: `${quest.questName}-${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? ''}`,
+              value: `${quest.questId}-${questsMap.get(quest.questId)?.questPhase ?? ''}`
+            }
+          })
+        }
+      })
     }
   })
+  const newResult: CascaderOption[] = []
+  result.forEach((value) => {
+    const newChild: CascaderOption[] = []
+    value.children.forEach((val) => {
+      if (val.children.length !== 0) newChild.push(val)
+    })
+    if (newChild.length !== 0) {
+      newResult.push({
+        label: value.label,
+        value: value.value,
+        children: newChild
+      })
+    }
+  })
+  return newResult
 })
 const accountSelected = async (v: string): Promise<void> => {
   quest.value = await useQuest(v)

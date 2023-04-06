@@ -43,7 +43,8 @@ import {
   NInputNumber,
   NSwitch,
   NCheckbox,
-  NCheckboxGroup
+  NCheckboxGroup,
+  NCascader
 } from 'naive-ui'
 
 export default create({
@@ -89,6 +90,7 @@ export default create({
     NInputNumber,
     NSwitch,
     NCheckbox,
-    NCheckboxGroup
+    NCheckboxGroup,
+    NCascader
   ]
 })
