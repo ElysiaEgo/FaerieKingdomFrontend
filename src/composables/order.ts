@@ -20,7 +20,7 @@ export interface Order {
 }
 
 export const useOrder = async (): Promise<OrderResponse> => {
-  return await api.post('query', {
+  return await api.post('queryOrder', {
     json: {
       token: getToken()
     }
@@ -28,7 +28,7 @@ export const useOrder = async (): Promise<OrderResponse> => {
 }
 
 export const newOrder = async (questId: number, questPhase: number, num: number, biliId: string, useApple: boolean[]): Promise<NewOrerResponse> => {
-  return await api.post('order', {
+  return await api.post('newOrder', {
     json: {
       questId,
       questPhase,

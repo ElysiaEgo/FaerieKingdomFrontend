@@ -5,6 +5,7 @@ interface TokenResponse {
   code: number
   userid: number
   token: string
+  expires: number
 }
 
 const router = useRouter()
@@ -26,6 +27,7 @@ export const useToken = async (uname: string, passwd: string): Promise<TokenResp
     }
   }).json<TokenResponse>().then((value) => {
     localStorage.setItem('token', value.token)
+    localStorage.setItem('expiresAt', (value.expires + new Date().getTime()).toString())
     return value
   })
 }
