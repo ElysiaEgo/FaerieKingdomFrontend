@@ -49,7 +49,7 @@ const model = ref({
 
 const loading = ref(false)
 
-const disabled = computed<boolean>(() => model.value.username === '' || model.value.password === '')
+const disabled = computed(() => model.value.username === '' || model.value.password === '')
 
 const handleLogin = async (e: Event): Promise<void> => {
   e.preventDefault()

@@ -1,21 +1,12 @@
 {
   "name": "fearless",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "A dashboard scaffolding based on Vue.js 3.x & TypeScript created by Vite.",
-  "keywords": [
-    "fearless",
-    "dashboard",
-    "vue",
-    "vuejs",
-    "vue3",
-    "typescript",
-    "vite",
-    "zce"
-  ],
+  "description": "",
+  "keywords": [],
   "repository": "zce/fearless",
   "license": "MIT",
-  "author": "zce <w@zce.me> (https://zce.me)",
+  "author": "goEval",
   "scripts": {
     "lint": "eslint src api mock --ext .ts,.vue --fix",
     "dev": "vite",

@@ -7,7 +7,7 @@ const router = createRouter({ history, routes })
 
 // Authorize (Make sure that is the first hook.)
 router.beforeEach(to => {
-  const needAuth = localStorage.getItem('token') === null
+  const needAuth = localStorage.getItem('token') === null || parseInt(localStorage.getItem('expiresAt') ?? '0') < new Date().getTime()
   // already authorized
   if (to.name === 'login' && !needAuth) {
     return to.query.redirect?.toString() ?? '/'

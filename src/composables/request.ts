@@ -18,6 +18,7 @@ export const useRequest = <T>(promise: Promise<T>, initialData: T | null = null)
       loading.value = false
     },
     err => {
+      console.log('useRequest error', err)
       error.value = err
       loading.value = false
     }
