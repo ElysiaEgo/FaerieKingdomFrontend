@@ -6,7 +6,7 @@ export interface BiliResponse {
 }
 
 export const usebiliAcco = async (biliname: string, bilipass: string, isios: boolean): Promise<BiliResponse> => {
-  return await api.post('bili_login', {
+  return await api.post('biliLogin', {
     json: {
       biliname,
       bilipass,
